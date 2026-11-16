@@ -99,7 +99,7 @@ public sealed class TrainingPage : Page
         elem.Margin = new Thickness(l, t, r, b);
     }
 
-    private async Task RestoreCurrentStateAsync()
+    public async Task RestoreCurrentStateAsync()
     {
         try
         {

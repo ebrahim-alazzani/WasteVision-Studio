@@ -44,13 +44,20 @@
 
 ---
 
-## 🖼️ لقطات من التطبيق (Visual Showcase)
+## 🖼️ لقطات من التطبيق والمنظومة (Visual Showcase)
 
-| لوحة التحكم الرئيسية (WinUI 3 Dashboard) | مختبر تدريب النموذج (Training & Live Epochs) |
+### 1. تطبيق الويندوز الأصلي (WinUI 3 & .NET 9 Desktop App)
+| لوحة التحكم الرئيسية (WinUI 3 Dashboard) | مختبر تدريب الشبكة والمنحنيات الحية (Training Lab) |
 |:---:|:---:|
-| ![لوحة التحكم](docs/screenshots/desktop_dashboard.png) | ![مختبر التدريب](docs/screenshots/desktop_training.png) |
+| ![لوحة التحكم بالويندوز](docs/screenshots/desktop_dashboard.png) | ![مختبر التدريب](docs/screenshots/desktop_training.png) |
 
-| واجهة التقييم والمخططات (Results & Confusion Matrix) | مسار التنفيذ التفاعلي الموحد (Interactive Pipeline) |
+### 2. منصة الويب والمحاكاة ثلاثية الأبعاد (Web Platform & 3D AI Visualizer)
+| لوحة تحكم الويب المتجاوبة (Responsive Web UI) | محاكاة الموترات ثلاثية الأبعاد (3D Architecture Visualizer) |
+|:---:|:---:|
+| ![واجهة الويب](docs/screenshots/web_dashboard.png) | ![محاكاة ثلاثية الأبعاد](docs/screenshots/web_3d_visualizer.png) |
+
+### 3. مصفوفة الالتباس والمسار التفاعلي (Confusion Matrix & Interactive Pipeline)
+| واجهة التقييم ومصفوفة الالتباس (Results & Confusion Matrix) | مسار التنفيذ التفاعلي الموحد (Interactive Pipeline) |
 |:---:|:---:|
 | ![نتائج التقييم](docs/screenshots/desktop_results.png) | ![المسار التفاعلي](docs/screenshots/colab_interactive_pipeline.jpg) |
 

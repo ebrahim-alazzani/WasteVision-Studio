@@ -42,6 +42,14 @@ public sealed class NavigationService : INavigationService
         }
 
         _frame.Content = page;
+        if (page is ResultsPage resultsPage)
+        {
+            _ = resultsPage.RefreshAsync();
+        }
+        else if (page is TrainingPage trainingPage)
+        {
+            _ = trainingPage.RestoreCurrentStateAsync();
+        }
         _onNavigate(pageTag);
     }
 }

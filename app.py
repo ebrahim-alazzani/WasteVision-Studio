@@ -64,9 +64,20 @@ def home() -> FileResponse:
 @app.get("/api/state", dependencies=[Depends(require_login)])
 def get_state() -> dict[str, Any]:
     with training_manager.state_lock:
+        if not training_manager.state.get("result") and STATE_FILE_PATH.exists():
+            saved = training_manager._read_saved_state()
+            if saved.get("result"):
+                training_manager.state["result"] = saved.get("result")
+                training_manager.state["history"] = saved.get("history") or training_manager.state.get("history")
+                training_manager.state["status"] = saved.get("status", "completed")
+                training_manager.state["current_epoch"] = saved.get("current_epoch", 0)
+                training_manager.state["total_epochs"] = saved.get("total_epochs", 0)
+
+        hist = training_manager.state.get("history") or {}
         return {
             "dataset": dataset_service.get_summary(),
             "training": training_manager.get_progress(),
+            "history": hist,
             "result": training_manager.state.get("result"),
             "samples": dataset_service.generate_gallery_thumbnails(training_manager.evaluation_records),
             "model_available": MODEL_PATH.exists(),

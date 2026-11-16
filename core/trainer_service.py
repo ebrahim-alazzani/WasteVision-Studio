@@ -45,14 +45,14 @@ class TrainingManager:
 
         saved = self._read_saved_state()
         self.state: dict[str, Any] = {
-            "status": "idle",
-            "current_epoch": 0,
-            "total_epochs": 0,
-            "history": {"loss": [], "val_loss": [], "accuracy": [], "val_accuracy": []},
-            "error": None,
+            "status": saved.get("status", "idle"),
+            "current_epoch": saved.get("current_epoch", 0),
+            "total_epochs": saved.get("total_epochs", 0),
+            "history": saved.get("history") or {"loss": [], "val_loss": [], "accuracy": [], "val_accuracy": []},
+            "error": saved.get("error"),
             "result": saved.get("result"),
-            "started_at": None,
-            "updated_at": None,
+            "started_at": saved.get("started_at"),
+            "updated_at": saved.get("updated_at"),
         }
 
     def get_tensorflow(self) -> Any:
