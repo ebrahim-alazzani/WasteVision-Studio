@@ -13,6 +13,7 @@ public sealed class NavigationService : INavigationService
     private readonly Window _owner;
     private readonly Hyperparameters _params = new();
     private readonly Action<string> _onNavigate;
+    private readonly Dictionary<string, Page> _cache = new();
 
     public NavigationService(Frame frame, IWasteApiClient api, Window owner, Action<string> onNavigate)
     {
@@ -24,17 +25,21 @@ public sealed class NavigationService : INavigationService
 
     public void NavigateTo(string pageTag)
     {
-        Page page = pageTag switch
+        if (!_cache.TryGetValue(pageTag, out var page))
         {
-            "data" => new DataPage(_api, _owner),
-            "settings" => new SettingsPage(this, _params),
-            "training" => new TrainingPage(_api, this, _params),
-            "results" => new ResultsPage(_api, this),
-            "camera" => new LiveCameraPage(_api, _owner),
-            "predict" => new PredictionPage(_api, _owner),
-            "about" => new AboutPage(),
-            _ => new OverviewPage(_api, this)
-        };
+            page = pageTag switch
+            {
+                "data" => new DataPage(_api, _owner),
+                "settings" => new SettingsPage(this, _params),
+                "training" => new TrainingPage(_api, this, _params),
+                "results" => new ResultsPage(_api, this),
+                "camera" => new LiveCameraPage(_api, _owner),
+                "predict" => new PredictionPage(_api, _owner),
+                "about" => new AboutPage(),
+                _ => new OverviewPage(_api, this)
+            };
+            _cache[pageTag] = page;
+        }
 
         _frame.Content = page;
         _onNavigate(pageTag);

@@ -127,6 +127,21 @@ def start_training(settings: TrainingHyperparameters) -> dict[str, str]:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
 
 
+@app.post("/api/train/reset", dependencies=[Depends(require_login)])
+def reset_training() -> dict[str, str]:
+    """Allows resetting training lock and state cleanly."""
+    if training_manager.job_lock.locked():
+        try:
+            training_manager.job_lock.release()
+        except RuntimeError:
+            pass
+    with training_manager.state_lock:
+        training_manager.state["status"] = "idle"
+        training_manager.persist_state()
+    return {"status": "ok", "message": "تمت إعادة ضبط حالة التدريب."}
+
+
+
 @app.get("/api/progress", dependencies=[Depends(require_login)])
 def progress() -> dict[str, Any]:
     return training_manager.get_progress()

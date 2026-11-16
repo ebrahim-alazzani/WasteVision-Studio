@@ -29,8 +29,8 @@
 
                 <!-- Brand Logo & App Identity -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
-                    <Border Width="36" Height="36" CornerRadius="10" Background="{StaticResource WasteGradientMintCyan}">
-                        <TextBlock Text="♻" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Width="38" Height="38" CornerRadius="10" Background="{ThemeResource TileSoftBackgroundBrush}" BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="1" Padding="3">
+                        <Image Source="Assets/logo.png" Width="30" Height="30" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="WASTEVISION STUDIO" FontWeight="Black" FontSize="14" CharacterSpacing="60" Foreground="{ThemeResource TextPrimaryBrush}"/>

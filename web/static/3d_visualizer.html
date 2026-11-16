@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <title>WasteVision 3D AI Visualizer · محاكاة ثلاثية الأبعاد</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    body { margin: 0; background: #0c161d; color: #d8e6df; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; }
+    #header { position: absolute; top: 12px; right: 16px; z-index: 10; background: rgba(15,25,32,0.85); backdrop-filter: blur(8px); padding: 12px 18px; border-radius: 10px; border: 1px solid #1a313b; }
+    #header h1 { margin: 0; font-size: 16px; color: #00e5a3; }
+    #header p { margin: 4px 0 0; font-size: 11px; color: #8ba2a0; }
+    #controls { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 8px; }
+    .btn { background: #13242c; color: #00e5a3; border: 1px solid #00e5a3; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
+    .btn:hover, .btn.active { background: #00e5a3; color: #0c161d; }
+    #canvas-container { width: 100vw; height: 100vh; display: block; }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <h1>♻️ WasteVision 3D Architectural Visualizer</h1>
+    <p>محاكاة ثلاثية الأبعاد تفاعلية لأحجام الموترات (Tensors) وتدفق الطبقات في شبكة CNN</p>
+  </div>
+  <div id="controls">
+    <button class="btn active" id="btn-tensors">1. موترات الشبكة (3D Tensors)</button>
+    <button class="btn" id="btn-sobel">2. سطح الحواف (3D Sobel Surface)</button>
+  </div>
+  <div id="canvas-container"></div>
+
+  <script>
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0c161d);
+    scene.fog = new THREE.Fog(0x0c161d, 12, 35);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 3, 14);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const dirLight = new THREE.DirectionalLight(0x00e5a3, 1.5);
+    dirLight.position.set(5, 10, 7);
+    scene.add(dirLight);
+
+    const groupTensors = new THREE.Group();
+    const groupSobel = new THREE.Group();
+    scene.add(groupTensors);
+    scene.add(groupSobel);
+    groupSobel.visible = false;
+
+    // 1. Build 3D Tensors
+    const stages = [
+      { name: "Input\\n160x160x3", w: 1.0, h: 1.0, d: 0.15, col: 0x4cc9f0 },
+      { name: "Conv 32\\n160x160x32", w: 1.0, h: 1.0, d: 0.35, col: 0x4895ef },
+      { name: "Pool 1\\n80x80x32", w: 0.65, h: 0.65, d: 0.35, col: 0x4361ee },
+      { name: "Conv 64\\n80x80x64", w: 0.65, h: 0.65, d: 0.6, col: 0x3f37c9 },
+      { name: "Pool 2\\n40x40x64", w: 0.45, h: 0.45, d: 0.6, col: 0x7209b7 },
+      { name: "Conv 128\\n40x40x128", w: 0.45, h: 0.45, d: 1.0, col: 0xb5179e },
+      { name: "GAP + Dense\\n64", w: 0.25, h: 0.8, d: 0.25, col: 0xf72585 },
+      { name: "Softmax Output\\n6 Classes", w: 0.25, h: 1.2, d: 0.25, col: 0x00e5a3 }
+    ];
+
+    stages.forEach((st, i) => {
+      const geo = new THREE.BoxGeometry(st.w, st.h, st.d);
+      const mat = new THREE.MeshStandardMaterial({
+        color: st.col,
+        roughness: 0.3,
+        metalness: 0.2,
+        transparent: true,
+        opacity: 0.85
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set((i - 3.5) * 1.55, 0, 0);
+      groupTensors.add(mesh);
+
+      // Wireframe overlay
+      const wire = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4 }));
+      mesh.add(wire);
+    });
+
+    // 2. Build 3D Sobel Surface (topographic wave mesh)
+    const gridDim = 50;
+    const planeGeo = new THREE.PlaneGeometry(8, 8, gridDim, gridDim);
+    const pos = planeGeo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const u = pos.getX(i), v = pos.getY(i);
+      const z = Math.sin(u * 1.5) * Math.cos(v * 1.5) * 0.9 + Math.sin(u * 3 + v * 2) * 0.3;
+      pos.setZ(i, z);
+    }
+    planeGeo.computeVertexNormals();
+    const planeMat = new THREE.MeshStandardMaterial({
+      color: 0x00c2ff,
+      wireframe: true,
+      roughness: 0.4
+    });
+    const sobelMesh = new THREE.Mesh(planeGeo, planeMat);
+    sobelMesh.rotation.x = -Math.PI / 2.5;
+    groupSobel.add(sobelMesh);
+
+    document.getElementById('btn-tensors').onclick = () => {
+      groupTensors.visible = true; groupSobel.visible = false;
+      document.getElementById('btn-tensors').classList.add('active');
+      document.getElementById('btn-sobel').classList.remove('active');
+    };
+    document.getElementById('btn-sobel').onclick = () => {
+      groupTensors.visible = false; groupSobel.visible = true;
+      document.getElementById('btn-sobel').classList.add('active');
+      document.getElementById('btn-tensors').classList.remove('active');
+    };
+
+    function animate() {
+      requestAnimationFrame(animate);
+      groupTensors.rotation.y += 0.002;
+      groupSobel.rotation.z += 0.003;
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.onresize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+  </script>
+</body>
+</html>

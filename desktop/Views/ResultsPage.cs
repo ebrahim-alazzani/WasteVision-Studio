@@ -55,6 +55,19 @@ public sealed class ResultsPage : Page
         chartsGrid.Children.Add(_lossChart);
         chartsGrid.Children.Add(_accuracyChart);
         _chartsStack.Children.Add(chartsGrid);
+
+        var btn3d = UiFactory.Action("عرض المحاكاة ثلاثية الأبعاد التفاعلية (3D Tensors & Sobel Surface)", (_, _) =>
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("http://127.0.0.1:8765/assets/3d_visualizer.html") { UseShellExecute = true });
+            }
+            catch { }
+        }, isPrimary: false);
+        btn3d.HorizontalAlignment = HorizontalAlignment.Center;
+        btn3d.Margin = new Thickness(0, 8, 0, 0);
+        _chartsStack.Children.Add(btn3d);
+
         body.Children.Add(UiFactory.Card(_chartsStack));
 
         _matrixStack = UiFactory.Stack();

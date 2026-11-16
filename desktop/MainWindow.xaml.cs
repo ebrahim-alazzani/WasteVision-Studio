@@ -67,10 +67,24 @@ public sealed partial class MainWindow : Window
             if (File.Exists(iconPath))
             {
                 appWindow.SetIcon(iconPath);
+                try
+                {
+                    IntPtr hIconBig = LoadImage(IntPtr.Zero, iconPath, 1 /*IMAGE_ICON*/, 32, 32, 0x00000010 /*LR_LOADFROMFILE*/);
+                    IntPtr hIconSmall = LoadImage(IntPtr.Zero, iconPath, 1 /*IMAGE_ICON*/, 16, 16, 0x00000010 /*LR_LOADFROMFILE*/);
+                    if (hIconBig != IntPtr.Zero) SendMessage(hWnd, 0x0080 /*WM_SETICON*/, (IntPtr)1 /*ICON_BIG*/, hIconBig);
+                    if (hIconSmall != IntPtr.Zero) SendMessage(hWnd, 0x0080 /*WM_SETICON*/, (IntPtr)0 /*ICON_SMALL*/, hIconSmall);
+                }
+                catch { }
             }
         }
         catch { }
     }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+    private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+    private static extern IntPtr LoadImage(IntPtr hinst, string lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
 
     private async Task ConnectBackendAsync()
     {
