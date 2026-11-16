@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#10191b" />
+  <title>الفرز الذكي للنفايات · مشروع رؤية حاسوبية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/app.css" />
+  <link rel="stylesheet" href="/assets/css/dashboard.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+</head>
+<body>
+  <div class="glow glow-one"></div><div class="glow glow-two"></div>
+  <div class="shell">
+    <aside class="app-sidebar" aria-label="التنقل الرئيسي">
+      <a class="sidebar-brand" href="#page-overview" data-page="page-overview"><span class="brand-icon">♻</span><span><b>WasteVision</b><small>مختبر الرؤية الحاسوبية</small></span></a>
+      <div class="sidebar-caption">مساحة العمل</div>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link active" href="#page-overview" data-page="page-overview"><span>⌂</span>لوحة التحكم</a>
+        <a class="sidebar-link" href="#page-data" data-page="page-data"><span>▧</span>البيانات والصور</a>
+        <a class="sidebar-link" href="#page-settings" data-page="page-settings"><span>⚙</span>إعداد التجربة</a>
+        <a class="sidebar-link" href="#page-training" data-page="page-training"><span>◉</span>تدريب النموذج</a>
+        <a class="sidebar-link" href="#page-results" data-page="page-results"><span>▥</span>التقييم والمخططات</a>
+        <a class="sidebar-link" href="#page-camera" data-page="page-camera"><span>📷</span>كاميرا الفرز المباشر</a>
+        <a class="sidebar-link" href="#page-predict" data-page="page-predict"><span>⌕</span>جرّب صورة</a>
+        <a class="sidebar-link" href="#page-about" data-page="page-about"><span>ⓘ</span>عن المشروع</a>
+      </nav>
+      <div class="sidebar-note"><span>بيئة تعليمية</span><p>التصنيف تقدير من النموذج، ويحتاج مراجعة بشرية قبل أي قرار فعلي.</p></div>
+      <div class="sidebar-version">Computer Vision · CNN</div>
+    </aside>
+    <div class="app-main">
+    <header class="topbar">
+      <a class="brand" href="/"><span class="brand-icon">♻</span><span><b>مختبر الفرز الذكي</b><small>COMPUTER VISION · COURSE PROJECT</small></span></a>
+      <div class="topbar-actions"><span class="workspace-chip">مساحة العمل / فرز النفايات</span><div class="service-state"><i id="service-dot"></i><span id="service-label">يتصل بخدمة المشروع</span></div></div>
+    </header>
+
+    <main>
+      <section class="workspace-page active" id="page-overview" data-workspace-page>
+        <section class="hero card"><div><span class="eyebrow">مشروع تطبيقي · OpenCV + CNN · WinUI 3 + Web</span><h1>من صورة النفاية إلى فئتها</h1><p>مختبر محلي متكامل لتجهيز الصور، تدريب مصنف CNN، ومراجعة النتائج واستدلال الصور في واجهات مستقلة تشترك في نفس خدمة Python والنموذج.</p><div class="hero-actions"><button class="hero-btn primary" data-go="page-data">تجهيز البيانات</button><button class="hero-btn" data-go="page-training">مختبر التدريب</button><button class="hero-btn" data-go="page-predict">اختبار صورة</button></div></div><div class="recycle-orbit"><span>CV</span><i></i><i></i><i></i></div></section>
+        <section class="overview-grid" aria-label="ملخص المشروع">
+          <article class="overview-tile"><span class="overview-icon">▧</span><div><small>الصور الصالحة</small><b id="kpi-total-images">—</b><em>مفحوصة بـ OpenCV وPIL</em></div></article>
+          <article class="overview-tile"><span class="overview-icon">◉</span><div><small>فئات التصنيف</small><b id="kpi-classes-count">—</b><em>مجلد لكل فئة (TrashNet)</em></div></article>
+          <article class="overview-tile"><span class="overview-icon">⌁</span><div><small>حالة النموذج</small><b id="kpi-model-status">جاهز</b><em>خدمة Python محلية</em></div></article>
+          <article class="overview-tile"><span class="overview-icon">▥</span><div><small>دقة الاختبار</small><b id="kpi-test-accuracy">—</b><em>اختبار مستقل غير ملوث</em></div></article>
+        </section>
+        <div class="overview-workflow"><article class="card panel"><span class="step-label">ابدأ من هنا</span><h2>خطوات التجربة المنظمة</h2><div class="workflow-cards"><button class="workflow-card" data-go="page-data"><b>01 · جهّز البيانات</b><span>ارفع صورًا مصنفة في ملف ZIP أو راجع المجموعة.</span></button><button class="workflow-card" data-go="page-settings"><b>02 · اضبط التجربة</b><span>اختر العصور وحجم الصورة وبقية المعاملات.</span></button><button class="workflow-card" data-go="page-training"><b>03 · درّب CNN</b><span>تابع تقدم التدريب ومخططات الشبكة في الوقت الحقيقي.</span></button><button class="workflow-card" data-go="page-results"><b>04 · راجع النتائج</b><span>افحص مصفوفة الالتباس ودقة كل فئة منفصلة.</span></button></div></article><article class="card panel method-panel"><span class="step-label">منهجية المشروع والتقنيات</span><h3>OpenCV + TensorFlow CNN</h3><p>• تهيئة الصور وتوحيد أبعادها مع OpenCV وPillow.<br/>• تقسيم متوازن للبيانات Stratified Split لمنع تسرب الفئات.<br/>• شبكة التفافية متعددة المراحل مع Regularization وDropout.<br/>• تطبيق ومشاركة النموذج نفسه بين تطبيق WinUI 3 وواجهة الويب.</p></article></div>
+      </section>
+
+      <section class="workspace-page" id="page-data" data-workspace-page hidden><div class="page-heading"><span class="step-label">مساحة البيانات</span><h1>البيانات والصور</h1><p>ارفع مجموعة منظمة بمجلد منفصل لكل فئة، ثم راجع العينات التي اكتشفها النظام.</p></div><article class="card panel" id="data-step"><div class="section-title"><div><span class="step-label">الخطوة 01</span><h2>جهّز صور الفئات</h2><p>ارفع ZIP يحتوي مجلدًا لكل فئة، مثل <code dir="ltr">plastic/image.jpg</code>.</p></div><span class="panel-icon">▧</span></div><a class="dataset-link" href="https://github.com/garythung/trashnet/raw/master/data/dataset-resized.zip" target="_blank" rel="noopener"><span>↓</span><span><b>تنزيل مجموعة TrashNet</b><small>مجموعة تعليمية تشمل الكرتون والزجاج والمعدن والورق والبلاستيك وفئات أخرى.</small></span></a><label class="dropzone" id="dropzone" for="dataset-file"><span class="upload-symbol">↑</span><b>اسحب ملف ZIP إلى هنا</b><small>أو اضغط لاختياره · حتى 100 ميغابايت</small><input id="dataset-file" type="file" accept=".zip,application/zip" /></label><div class="alert" id="alert" role="alert" hidden></div><div class="dataset-summary" id="dataset-summary" hidden></div><div class="gallery" id="sample-gallery" hidden></div></article></section>
+
+      <section class="workspace-page" id="page-settings" data-workspace-page hidden><div class="page-heading"><span class="step-label">إعداد النموذج</span><h1>إعداد تجربة CNN</h1><p>اضبط معاملات التجربة قبل بدء التدريب. مجموع الاختبار والتحقق يجب ألا يتجاوز 50%.</p></div><article class="card panel" id="settings-step"><div class="section-title"><div><span class="step-label">الخطوة 02</span><h2>معاملات التدريب</h2><p>غيّر عاملًا واحدًا في كل مقارنة لتفهم أثره على النتائج.</p></div><span class="panel-icon">⚙</span></div><div class="preset-buttons"><button type="button" class="preset-pill" data-preset="quick">⚡ تجربة سريعة (5 عصور)</button><button type="button" class="preset-pill active" data-preset="balanced">⚖️ قياسي متوازن (12 عصراً)</button><button type="button" class="preset-pill" data-preset="deep">🎯 دقة قصوى (20 عصراً)</button></div><div class="settings-grid"><label>عصور التدريب<select id="epochs"><option>5</option><option selected>12</option><option>20</option><option>40</option></select><small>يتوقف EarlyStopping إذا لم يتحسن التحقق.</small></label><label>حجم الصورة<select id="image-size"><option value="96">96 × 96</option><option value="128">128 × 128</option><option value="160" selected>160 × 160</option><option value="224">224 × 224</option></select><small>صورة ملونة RGB.</small></label><label>حجم الدفعة<select id="batch-size"><option value="8">8</option><option value="16" selected>16</option><option value="32">32</option></select><small>قلله عند نفاد ذاكرة GPU.</small></label><label>مرشحات الالتفاف الأولى<select id="filters"><option value="16">16 · خفيف</option><option value="32" selected>32 · متوازن</option><option value="64">64 · أثقل</option></select><small>الطبقات التالية تضاعف العدد.</small></label><label>نسبة الاختبار<select id="test-percent"><option value="10">10%</option><option value="15" selected>15%</option><option value="20">20%</option><option value="25">25%</option></select><small>للتقييم النهائي فقط.</small></label><label>نسبة التحقق<select id="validation-percent"><option value="10">10%</option><option value="15" selected>15%</option><option value="20">20%</option><option value="25">25%</option></select><small>لمراقبة التحسن أثناء التدريب.</small></label><label>معدل التعلم<select id="learning-rate"><option value="0.0003">0.0003</option><option value="0.001" selected>0.001</option><option value="0.003">0.003</option></select><small>Adam optimizer.</small></label><label>Dropout<select id="dropout"><option value="0.2">0.20</option><option value="0.35" selected>0.35</option><option value="0.5">0.50</option></select><small>يحد من الاعتماد الزائد على التدريب.</small></label></div><label class="check-setting"><input id="augmentation" type="checkbox" checked /><span><b>زيادة بيانات خفيفة</b><small>انعكاس وتدوير وتكبير بسيط خلال التدريب فقط.</small></span></label><aside class="explain"><b>ما الذي سنقيسه؟</b><span>الخسارة والدقة أثناء التدريب والتحقق، ثم Precision وRecall وF1 على اختبار محجوز.</span></aside></article></section>
+
+      <section class="workspace-page" id="page-training" data-workspace-page hidden><div class="page-heading"><span class="step-label">التنفيذ والمتابعة</span><h1>تدريب النموذج</h1><p>ابدأ التدريب بعد رفع البيانات وضبط الإعدادات. التقدم والمخططات تستند إلى قيم TensorFlow الحية.</p></div><article class="card panel" id="training-step"><div class="section-title"><div><span class="step-label">الخطوة 03</span><h2>الشبكة العصبية أثناء التدريب</h2><p>صورة RGB ← طبقات التفاف وتجميع ← سمات ← احتمالات الفئات.</p></div><span class="panel-icon">◉</span></div><div class="network-card"><div class="network-head"><span><b>بنية CNN</b><small>يمكن تدوير النموذج ثلاثي الأبعاد وسحبه.</small></span><span id="network-status">جاهزة</span></div><div id="network-scene" role="img" aria-label="رسم توضيحي لبنية CNN أثناء التدريب"></div><small class="network-note">الرسم يوضح مراحل النموذج؛ المنحنيات والمقاييس تعكس التدريب الفعلي.</small></div><button class="primary-button" id="train-button" disabled>ابدأ تدريب النموذج</button><div class="training-progress" id="training-progress" hidden><div><b id="training-message">جارٍ تجهيز البيانات</b><span id="training-percent">0%</span></div><progress id="progress-bar" max="100" value="0"></progress><small>مدة التدريب تعتمد على الجهاز وحجم الصور.</small></div><div class="training-stats-bar" id="training-stats-bar" hidden><div class="stat-pill"><span>العصر</span><b id="train-stat-epoch">0 / 0</b></div><div class="stat-pill"><span>Loss تدريب</span><b id="train-stat-loss">—</b></div><div class="stat-pill"><span>Val Loss</span><b id="train-stat-valloss">—</b></div><div class="stat-pill"><span>Val Accuracy</span><b id="train-stat-valacc">—</b></div></div></article><div class="training-charts chart-grid"><article class="chart-card"><h3>الخسارة حسب العصر</h3><canvas id="loss-chart"></canvas></article><article class="chart-card"><h3>الدقة حسب العصر</h3><canvas id="accuracy-chart"></canvas></article></div></section>
+
+      <section class="workspace-page" id="page-results" data-workspace-page hidden><div class="page-heading"><span class="step-label">تحليل النموذج</span><h1>التقييم والمخططات</h1><p>راجع الأداء العام وأخطاء التصنيف قبل تجربة صور جديدة.</p></div><section class="card panel results" id="results-step" hidden><div class="section-title"><div><span class="step-label">الخطوة 04</span><h2>نتائج الاختبار</h2><p id="result-caption">اختبار مستقل لم يدخل في تحديث أوزان النموذج.</p></div></div><div class="metric-grid" id="metrics"></div><div class="chart-grid"><article class="chart-card"><h3>مصفوفة الالتباس · اختبار</h3><div id="confusion-matrix" class="matrix"></div></article><article class="chart-card"><h3>Precision وRecall وF1 لكل فئة</h3><canvas id="class-chart"></canvas></article></div><div class="report-wrap"><table id="class-report"></table></div></section><div class="card empty-state" id="results-empty"><span>▥</span><b>لا توجد نتائج تقييم بعد</b><p>ارفع البيانات، اضبط الإعدادات، ثم درّب النموذج لعرض المقاييس والمخططات.</p><button class="secondary-button" data-go="page-data">الذهاب إلى البيانات</button></div></section>
+
+      <section class="workspace-page" id="page-camera" data-workspace-page hidden>
+        <div class="page-heading"><span class="step-label">رؤية حاسوبية مباشرة · Live Video</span><h1>كاميرا الفرز المباشر</h1><p>وجّه كاميرا جهازك أو كاميرا الويب نحو أي عنصر نفاية للتعرف الفوري عليه وتحديد نوعه وسلة فرزه المناسبة.</p></div>
+        <article class="card panel camera-panel">
+          <div class="camera-stage">
+            <div class="video-container" id="video-container">
+              <video id="camera-video" playsinline autoplay muted></video>
+              <canvas id="camera-hud-canvas"></canvas>
+              <div class="camera-center-roi"><span>ضع النفاية هنا</span></div>
+            </div>
+            <div class="camera-controls">
+              <button type="button" class="primary-button" id="btn-start-camera">▶ تشغيل الكاميرا</button>
+              <button type="button" class="secondary-button" id="btn-stop-camera" disabled>⏹ إيقاف</button>
+              <button type="button" class="preset-pill" id="btn-snap-camera" disabled>📸 لقطة وتحليل</button>
+            </div>
+          </div>
+          <div class="camera-live-badge" id="camera-live-badge">
+            <div class="live-indicator"><span class="pulse-dot"></span><b id="live-pred-label">في انتظار تشغيل الكاميرا…</b></div>
+            <div class="live-conf" id="live-pred-conf">—</div>
+            <div class="live-tip" id="live-pred-tip">ضع النفايات أمام الكاميرا للتعرف عليها فورياً عبر شبكة CNN.</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="workspace-page" id="page-predict" data-workspace-page hidden><div class="page-heading"><span class="step-label">استدلال النموذج</span><h1>اختبر صورة</h1><p>اختر صورة من جهازك بعد تدريب النموذج؛ ستظهر الفئة واحتمالات التوقع.</p></div><article class="card panel prediction-panel" id="prediction-panel"><div class="section-title"><div><span class="step-label">توقع صورة جديدة</span><h2>ارفع صورة للتصنيف</h2><p>يدعم JPG وPNG وWEBP حتى 20 ميغابايت.</p></div></div><label class="image-pick" for="prediction-file"><span>＋</span><b id="prediction-name">اختر صورة من جهازك</b><input id="prediction-file" type="file" accept="image/jpeg,image/png,image/webp,image/bmp" /></label><img id="prediction-preview" alt="معاينة الصورة التي سنجربها" hidden /><button class="secondary-button" id="predict-button" disabled>حلّل الصورة</button><div class="prediction-result" id="prediction-result"><span>◉</span><p>الفئة واحتمالاتها ستظهر هنا.</p></div></article></section>
+
+      <section class="workspace-page" id="page-about" data-workspace-page hidden><div class="page-heading"><span class="step-label">معلومات المشروع</span><h1>عن مختبر الفرز الذكي</h1><p>تطبيق تعليمي يجمع الرؤية الحاسوبية والتعلم العميق ضمن سير عمل واضح.</p></div><div class="about-grid"><article class="card panel method-panel" id="about-project"><span class="step-label">مسار معالجة الصورة</span><h3>من الصورة إلى التقييم</h3><ol><li>OpenCV يقرأ الصورة ويجهز أبعادها.</li><li>نقسم الصور مع الحفاظ على نسب الفئات.</li><li>CNN تتعلم الأنماط البصرية المحلية.</li><li>نقيّمها على مجموعة اختبار مستقلة.</li></ol></article><article class="card panel caution-panel"><span class="step-label">حدود التجربة</span><p>صور TrashNet بخلفيات بسيطة نسبيًا. اختبر صور هاتف بإضاءة وخلفيات متنوعة. التصنيف تقدير تعليمي يحتاج مراجعة بشرية ولا يتحكم بآلة فرز.</p></article></div></section>
+    </main>
+    <footer>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <span>مشروع مختبر فرز النفايات بالذكاء الاصطناعي · تطوير: <b>إبراهيم العزاني (Ebrahim Alazzani)</b></span>
+        <a href="https://github.com/ebrahim-alazzani/WasteVision-Studio" target="_blank" rel="noopener" style="color:var(--mint);text-decoration:none;font-weight:700;">GitHub Repository ↗</a>
+      </div>
+    </footer>
+    </div>
+  </div>
+</body>
+</html>

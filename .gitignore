@@ -1,0 +1,57 @@
+# Build & Compilation outputs
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+.vs/
+desktop/.vs/
+desktop/bin/
+desktop/obj/
+build/
+.dart_tool/
+publish/
+PublishOutput/
+*stitch*
+*sketch*
+
+# Binaries, Archives & Documents
+*.pdf
+*.zip
+*.rar
+*.7z
+*.apk
+*.aab
+*.exe
+*.dll
+*.pdb
+*.docx
+
+# Datasets and Machine Learning Weights (Preserve only .gitkeep)
+data/**
+!data/.gitkeep
+*.keras
+*.h5
+*.pending.keras
+run_state.json
+
+# Python Virtual Environments & Caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.ipynb_checkpoints/
+.runtime-fastapi/
+.runtime-packages/
+anaconda_projects/
+scratch/
+
+# Temporary files & Logs
+*.log
+*.tmp
+*.user
+*.suo
+*.userosv
+startup_log.txt
+out.txt
+err.txt

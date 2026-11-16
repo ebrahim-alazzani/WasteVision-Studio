@@ -1,0 +1,137 @@
+<Window x:Class="WasteVision.Desktop.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="WasteVision Studio · مختبر الفرز الذكي بالرؤية الحاسوبية">
+
+    <Grid FlowDirection="RightToLeft" Background="{ThemeResource WindowBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <!-- Top App Header / TitleBar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Main App Body with NavigationView -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Header Bar with Glass / Clean Card styling -->
+        <Border x:Name="AppTitleBar"
+                Grid.Row="0"
+                Height="58"
+                Background="{ThemeResource HeaderGlassBrush}"
+                BorderBrush="{ThemeResource CardBorderBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="18,0,18,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Brand Logo & App Identity -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
+                    <Border Width="36" Height="36" CornerRadius="10" Background="{StaticResource WasteGradientMintCyan}">
+                        <TextBlock Text="♻" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="WASTEVISION STUDIO" FontWeight="Black" FontSize="14" CharacterSpacing="60" Foreground="{ThemeResource TextPrimaryBrush}"/>
+                        <TextBlock Text="مختبر الفرز الذكي · OPENCV + CNN" FontSize="10" FontWeight="SemiBold" Foreground="{ThemeResource WasteMintGlowBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Quick Action Button -->
+                <Button x:Name="BtnQuickAction"
+                        Grid.Column="1"
+                        Margin="24,0,0,0"
+                        Padding="14,7,16,7"
+                        CornerRadius="9"
+                        Background="{StaticResource WasteGradientMintCyan}"
+                        Foreground="White"
+                        Click="BtnQuickAction_Click"
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE710;" FontSize="12" Foreground="White"/>
+                        <TextBlock Text="تجهيز بيانات جديدة" FontWeight="Bold" FontSize="12"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Center Search Box -->
+                <AutoSuggestBox x:Name="SearchBox"
+                                Grid.Column="2"
+                                PlaceholderText="بحث في صفحات المشروع والفئات والإعدادات…"
+                                Width="340"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                QueryIcon="Find"
+                                QuerySubmitted="SearchBox_QuerySubmitted"/>
+
+                <!-- Right Quick Actions: Service Status & Theme Toggle -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                    <!-- Service Connection Badge -->
+                    <Border Background="{ThemeResource TileSoftBackgroundBrush}"
+                            BorderBrush="{ThemeResource CardBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="10,6">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Ellipse x:Name="ServiceStatusDot" Width="9" Height="9" Fill="{StaticResource WasteAmberBrush}"/>
+                            <TextBlock x:Name="ServiceStatus" Text="جارٍ الاتصال بالخدمة…" FontSize="11" Foreground="{ThemeResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Theme Toggle Button -->
+                    <Button x:Name="ThemeToggleBtn"
+                            Content="◐"
+                            FontSize="14"
+                            Width="38"
+                            Height="34"
+                            CornerRadius="8"
+                            ToolTipService.ToolTip="تبديل المظهر (Dark / Light Theme)"
+                            Click="ThemeToggleBtn_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Workspace Shell with Left Navigation -->
+        <NavigationView x:Name="Navigation"
+                        Grid.Row="1"
+                        IsSettingsVisible="False"
+                        IsBackButtonVisible="Collapsed"
+                        PaneTitle="مساحة العمل"
+                        PaneDisplayMode="Left"
+                        OpenPaneLength="240"
+                        CompactPaneLength="54"
+                        Background="Transparent"
+                        SelectionChanged="Navigation_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="لوحة التحكم (Dashboard)" Tag="overview">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE80F;" Foreground="{StaticResource WasteMintBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="البيانات ومجموعة الصور" Tag="data">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xEB9F;" Foreground="{StaticResource WasteCyanBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="إعداد معاملات CNN" Tag="settings">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE713;" Foreground="{StaticResource WasteAmberBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="مختبر تدريب النموذج" Tag="training">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE768;" Foreground="{StaticResource WasteEmeraldBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="التقييم والمخططات" Tag="results">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE9D9;" Foreground="{StaticResource WasteRoseBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="كاميرا الفرز المباشر" Tag="camera">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE714;" Foreground="{StaticResource WasteMintBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="اختبار صورة واستدلال" Tag="predict">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE721;" Foreground="{StaticResource WasteMintBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItem Content="عن المشروع والتوثيق" Tag="about">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE946;" Foreground="{ThemeResource TextSecondaryBrush}"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <!-- Page Container Frame -->
+            <Frame x:Name="ContentFrame" Background="Transparent" Margin="8,8,8,8"/>
+        </NavigationView>
+    </Grid>
+</Window>
