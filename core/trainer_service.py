@@ -78,9 +78,18 @@ class TrainingManager:
 
     def get_progress(self) -> dict[str, Any]:
         with self.state_lock:
+            total = self.state.get("total_epochs")
+            res = self.state.get("result") or {}
+            if not total and res.get("epochs_completed"):
+                total = res["epochs_completed"]
+            curr = self.state.get("current_epoch") or total or 0
             return {
-                k: self.state.get(k)
-                for k in ("status", "current_epoch", "total_epochs", "history", "error", "updated_at")
+                "status": self.state.get("status"),
+                "current_epoch": curr,
+                "total_epochs": total or curr,
+                "history": self.state.get("history", {}),
+                "error": self.state.get("error"),
+                "updated_at": self.state.get("updated_at"),
             }
 
     def reset_state(self) -> None:

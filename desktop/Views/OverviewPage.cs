@@ -46,10 +46,10 @@ public sealed class OverviewPage : Page
         var kpiGrid = new Grid { Margin = new Thickness(0, 4, 0, 4) };
         for (int i = 0; i < 4; i++) kpiGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-        _kpiImages = UiFactory.KpiCard("إجمالي الصور الصالحة", "—", "جارٍ الفحص", "&#xEB9F;", UiFactory.ThemeBrush("WasteCyanBrush"));
-        _kpiClasses = UiFactory.KpiCard("فئات التصنيف", "—", "مجلد لكل فئة", "&#xE8EC;", UiFactory.ThemeBrush("WasteMintBrush"));
-        _kpiModel = UiFactory.KpiCard("حالة تدريب CNN", "جاهز", "خدمة Python متصلة", "&#xE768;", UiFactory.ThemeBrush("WasteAmberBrush"));
-        _kpiAccuracy = UiFactory.KpiCard("دقة الاختبار", "—", "تقييم مستقل", "&#xE9D9;", UiFactory.ThemeBrush("WasteEmeraldBrush"));
+        _kpiImages = UiFactory.KpiCard("إجمالي الصور الصالحة", "—", "جارٍ الفحص", "\uEB9F", UiFactory.ThemeBrush("WasteCyanBrush"));
+        _kpiClasses = UiFactory.KpiCard("فئات التصنيف", "—", "مجلد لكل فئة", "\uE8EC", UiFactory.ThemeBrush("WasteMintBrush"));
+        _kpiModel = UiFactory.KpiCard("حالة تدريب CNN", "جاهز", "خدمة Python متصلة", "\uE768", UiFactory.ThemeBrush("WasteAmberBrush"));
+        _kpiAccuracy = UiFactory.KpiCard("دقة الاختبار", "—", "تقييم مستقل", "\uE9D9", UiFactory.ThemeBrush("WasteEmeraldBrush"));
 
         SetColumnMargin(_kpiImages, 0, 0, 0, 6, 0);
         SetColumnMargin(_kpiClasses, 1, 6, 0, 6, 0);

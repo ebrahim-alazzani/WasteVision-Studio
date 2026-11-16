@@ -124,10 +124,10 @@ public sealed class ResultsPage : Page
             var g = new Grid { Margin = new Thickness(0, 8, 0, 0) };
             for (int i = 0; i < 4; i++) g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            var m1 = UiFactory.KpiCard("دقة الاختبار", $"{acc * 100:F1}%", "Test Accuracy", "&#xE8EC;", UiFactory.ThemeBrush("WasteEmeraldBrush"));
-            var m2 = UiFactory.KpiCard("عينات الاختبار", res["test_images"]?.ToString() ?? "—", "Test Split", "&#xEB9F;", UiFactory.ThemeBrush("WasteCyanBrush"));
-            var m3 = UiFactory.KpiCard("عينات التدريب", res["train_images"]?.ToString() ?? "—", "Train Split", "&#xE768;", UiFactory.ThemeBrush("WasteMintBrush"));
-            var m4 = UiFactory.KpiCard("العصور المنفذة", res["epochs_completed"]?.ToString() ?? "—", "Completed Epochs", "&#xE713;", UiFactory.ThemeBrush("WasteAmberBrush"));
+            var m1 = UiFactory.KpiCard("دقة الاختبار", $"{acc * 100:F1}%", "Test Accuracy", "\uE8EC", UiFactory.ThemeBrush("WasteEmeraldBrush"));
+            var m2 = UiFactory.KpiCard("عينات الاختبار", res["test_images"]?.ToString() ?? "—", "Test Split", "\uEB9F", UiFactory.ThemeBrush("WasteCyanBrush"));
+            var m3 = UiFactory.KpiCard("عينات التدريب", res["train_images"]?.ToString() ?? "—", "Train Split", "\uE768", UiFactory.ThemeBrush("WasteMintBrush"));
+            var m4 = UiFactory.KpiCard("العصور المنفذة", res["epochs_completed"]?.ToString() ?? "—", "Completed Epochs", "\uE713", UiFactory.ThemeBrush("WasteAmberBrush"));
 
             SetColMargin(m1, 0, 0, 0, 6, 0);
             SetColMargin(m2, 1, 6, 0, 6, 0);

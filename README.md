@@ -38,7 +38,7 @@
 
 يتميز المشروع بدمج متكامل وموحد يخدم 3 واجهات تشترك في نفس خدمة الذكاء الاصطناعي ونفس النموذج والبيانات:
 - **تطبيق Windows أصلي بـ WinUI 3 (.NET 9):** واجهة عصرية بتصميم Fluent Design 2، شريط علوي شفاف ومندمج، لوحة تنقل جانبية، ورسوم بيانية ومخططات تفاعلية.
-- **واجهة ويب تفاعلية مستلهمة من MediScript AI:** لوحة تحكم بشاشات مستقلة، بطاقات أداء KPI، ومخططات حيّة للعصور وتوزيع الاحتمالات.
+- **واجهة ويب تفاعلية حديثة:** لوحة تحكم بشاشات مستقلة، بطاقات أداء KPI، ومخططات حيّة للعصور وتوزيع الاحتمالات.
 - **كاميرا الفرز الذكي المباشر (Live Real-time Camera):** معالجة فيديو حي ومباشر عبر **OpenCV** و **WebRTC** مع مستطيل استهداف ذكي وتصنيف فوري بمعدل 30+ إطار بالثانية (FPS).
 - **دفتر Jupyter / Google Colab:** تجربة استكشافية تفاعلية مع توثيق ودوال مساعدة موثوقة.
 
@@ -46,13 +46,13 @@
 
 ## 🖼️ لقطات من التطبيق (Visual Showcase)
 
-| واجهة التقييم والمخططات (WinUI 3 Results & Curves) | واجهة فحص الصور والاستدلال الفوري (Prediction) |
+| لوحة التحكم الرئيسية (WinUI 3 Dashboard) | مختبر تدريب النموذج (Training & Live Epochs) |
 |:---:|:---:|
-| ![نتائج التقييم](docs/screenshots/desktop_results.png) | ![استدلال فوري](docs/screenshots/desktop_prediction.png) |
+| ![لوحة التحكم](docs/screenshots/desktop_dashboard.png) | ![مختبر التدريب](docs/screenshots/desktop_training.png) |
 
-| إعداد معاملات شبكة CNN (Hyperparameters Settings) |
-|:---:|
-| ![إعداد المعاملات](docs/screenshots/desktop_settings.png) |
+| واجهة التقييم والمخططات (Results & Confusion Matrix) | مسار التنفيذ التفاعلي الموحد (Interactive Pipeline) |
+|:---:|:---:|
+| ![نتائج التقييم](docs/screenshots/desktop_results.png) | ![المسار التفاعلي](docs/screenshots/colab_interactive_pipeline.jpg) |
 
 ---
 
@@ -232,7 +232,7 @@ WasteVision-Studio/
 │   ├── Views/                           # صفحات التطبيق (Overview, Data, Settings, Training, Results, Camera, Predict, About)
 │   ├── MainWindow.xaml                  # الواجهة الرئيسية والشريط المدمج
 │   └── WasteVision.Desktop.csproj       # ملف مشروع .NET 9 Unpacked x64
-├── web/                                 # واجهة الويب (MediScript Style)
+├── web/                                 # واجهة الويب التفاعلية
 │   ├── index.html                       # تطبيق الصفحة الواحدة
 │   └── static/                          # ملفات CSS والتنسيقات ومكتبات JS
 ├── docs/                                # الوثائق وشعار وصور المشروع

@@ -45,10 +45,10 @@ public sealed class TrainingPage : Page
         var metricsGrid = new Grid { Margin = new Thickness(0, 10, 0, 10) };
         for (int i = 0; i < 4; i++) metricsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-        _bEpoch = UiFactory.KpiCard("العصر الحالي", "0 / 0", "Epochs", "&#xE768;", UiFactory.ThemeBrush("WasteMintBrush"));
-        _bLoss = UiFactory.KpiCard("خسارة التدريب", "—", "Loss", "&#xE9D9;", UiFactory.ThemeBrush("WasteAmberBrush"));
-        _bValLoss = UiFactory.KpiCard("خسارة التحقق", "—", "Val Loss", "&#xE9D9;", UiFactory.ThemeBrush("WasteRoseBrush"));
-        _bAcc = UiFactory.KpiCard("دقة التحقق", "—", "Val Accuracy", "&#xE8EC;", UiFactory.ThemeBrush("WasteEmeraldBrush"));
+        _bEpoch = UiFactory.KpiCard("العصر الحالي", "0 / 0", "Epochs", "\uE768", UiFactory.ThemeBrush("WasteMintBrush"));
+        _bLoss = UiFactory.KpiCard("خسارة التدريب", "—", "Loss", "\uE9D9", UiFactory.ThemeBrush("WasteAmberBrush"));
+        _bValLoss = UiFactory.KpiCard("خسارة التحقق", "—", "Val Loss", "\uE9D9", UiFactory.ThemeBrush("WasteRoseBrush"));
+        _bAcc = UiFactory.KpiCard("دقة التحقق", "—", "Val Accuracy", "\uE8EC", UiFactory.ThemeBrush("WasteEmeraldBrush"));
 
         SetColumnMargin(_bEpoch, 0, 0, 0, 6, 0);
         SetColumnMargin(_bLoss, 1, 6, 0, 6, 0);
@@ -185,19 +185,48 @@ public sealed class TrainingPage : Page
     {
         var currentEpoch = cur["current_epoch"]?.GetValue<int>() ?? 0;
         var total = cur["total_epochs"]?.GetValue<int>() ?? 0;
+        if (total == 0 && cur["result"] is JsonObject r && r["epochs_completed"] != null)
+        {
+            total = r["epochs_completed"]?.GetValue<int>() ?? _params.Epochs;
+        }
+        if (total == 0) total = _params.Epochs;
+        if (currentEpoch == 0 && total > 0 && cur["status"]?.ToString() == "completed")
+        {
+            currentEpoch = total;
+        }
 
         _progress.Value = total > 0 ? Math.Min(100, currentEpoch * 100.0 / total) : 0;
         UiFactory.SetKpiValue(_bEpoch, $"{currentEpoch} / {total}");
 
         if (cur["history"] is JsonObject history)
         {
-            if (history["loss"] is JsonArray lossArr && lossArr.Count > 0 && lossArr.Last()?.GetValue<double>() is double l)
-                UiFactory.SetKpiValue(_bLoss, $"{l:F4}");
-            if (history["val_loss"] is JsonArray valLossArr && valLossArr.Count > 0 && valLossArr.Last()?.GetValue<double>() is double vl)
-                UiFactory.SetKpiValue(_bValLoss, $"{vl:F4}");
-            if (history["val_accuracy"] is JsonArray valAccArr && valAccArr.Count > 0 && valAccArr.Last()?.GetValue<double>() is double va)
-                UiFactory.SetKpiValue(_bAcc, $"{va * 100:F1}%");
+            var lossList = ExtractDoubles(history["loss"]);
+            var valLossList = ExtractDoubles(history["val_loss"]);
+            var valAccList = ExtractDoubles(history["val_accuracy"]);
+
+            if (lossList.Count > 0)
+                UiFactory.SetKpiValue(_bLoss, $"{lossList[^1]:F4}");
+            if (valLossList.Count > 0)
+                UiFactory.SetKpiValue(_bValLoss, $"{valLossList[^1]:F4}");
+            if (valAccList.Count > 0)
+                UiFactory.SetKpiValue(_bAcc, $"{valAccList[^1] * 100:F1}%");
         }
+    }
+
+    private static List<double> ExtractDoubles(JsonNode? node)
+    {
+        var list = new List<double>();
+        if (node is JsonArray arr)
+        {
+            foreach (var item in arr)
+            {
+                if (item != null && double.TryParse(item.ToString(), System.Globalization.CultureInfo.InvariantCulture, out var d))
+                {
+                    list.Add(d);
+                }
+            }
+        }
+        return list;
     }
 
     private async Task MonitorProgressAsync()

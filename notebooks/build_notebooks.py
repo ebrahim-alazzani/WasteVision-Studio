@@ -1,5 +1,4 @@
 """WasteVision Studio - Jupyter Notebook Generator.
-Inspired by MediScript AI modular architecture.
 Creates sequential reproducible research notebooks and a Master Interactive Pipeline Notebook.
 """
 

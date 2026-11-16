@@ -66,9 +66,33 @@ public static class UiFactory
         return button;
     }
 
+    public static string ParseGlyph(string g)
+    {
+        if (string.IsNullOrEmpty(g)) return "";
+        if (g.StartsWith("&#x", StringComparison.OrdinalIgnoreCase) && g.EndsWith(";"))
+        {
+            var hex = g.Substring(3, g.Length - 4);
+            if (int.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out int code))
+            {
+                return char.ConvertFromUtf32(code);
+            }
+        }
+        return g;
+    }
+
     public static Border KpiCard(string title, string value, string note, string glyph, Brush iconBrush)
     {
         var grid = new Grid { ColumnDefinitions = { new ColumnDefinition { Width = GridLength.Auto }, new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) } } };
+
+        var fontIcon = new FontIcon
+        {
+            Glyph = ParseGlyph(glyph),
+            FontFamily = new FontFamily("Segoe Fluent Icons, Segoe MDL2 Assets"),
+            FontSize = 20,
+            Foreground = iconBrush,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
 
         var iconBox = new Border
         {
@@ -79,7 +103,7 @@ public static class UiFactory
             BorderBrush = ThemeBrush("CardBorderBrush"),
             BorderThickness = new Thickness(1),
             Margin = new Thickness(0, 0, 14, 0),
-            Child = new FontIcon { Glyph = glyph, FontSize = 20, Foreground = iconBrush, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center }
+            Child = fontIcon
         };
         Grid.SetColumn(iconBox, 0);
         grid.Children.Add(iconBox);

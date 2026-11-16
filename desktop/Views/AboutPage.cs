@@ -19,7 +19,7 @@ public sealed class AboutPage : Page
         // Arch card
         var info = UiFactory.Stack(10);
         info.Children.Add(UiFactory.Label("المعمارية المتكاملة والتقنيات المستخدمة", 18, true));
-        info.Children.Add(UiFactory.Label("• واجهة Windows أصلية بـ WinUI 3 وWindows App SDK معمارية Unpacked على .NET 9.\n• واجهة ويب حديثة ومتجاوبة مستوحاة من تنظيم ونظافة MediScript AI.\n• خدمة خلفية موحدة بـ FastAPI تعمل على 127.0.0.1:8765 تشترك فيها الواجهتان.\n• نماذج تعلم عميق باستخدام TensorFlow وKeras مع طبقات Convolution وMaxPooling وDropout.\n• مكتبة OpenCV وPillow لقراءة ومعالجة وتوحيد أبعاد الصور.", 13, false, UiFactory.ThemeBrush("TextSecondaryBrush")));
+        info.Children.Add(UiFactory.Label("• واجهة Windows أصلية بـ WinUI 3 وWindows App SDK معمارية Unpacked على .NET 9.\n• واجهة ويب حديثة ومتجاوبة بنظام البطاقات والصفحات المستقلة.\n• خدمة خلفية موحدة بـ FastAPI تعمل على 127.0.0.1:8765 تشترك فيها الواجهتان.\n• نماذج تعلم عميق باستخدام TensorFlow وKeras مع طبقات Convolution وMaxPooling وDropout.\n• مكتبة OpenCV وPillow لقراءة ومعالجة وتوحيد أبعاد الصور.", 13, false, UiFactory.ThemeBrush("TextSecondaryBrush")));
         body.Children.Add(UiFactory.Card(info));
 
         // Developer card
