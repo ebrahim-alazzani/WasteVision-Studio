@@ -37,10 +37,105 @@
     <div class="app-main">
     <header class="topbar">
       <a class="brand" href="/"><span class="brand-icon">♻</span><span><b>مختبر الفرز الذكي</b><small>COMPUTER VISION · COURSE PROJECT</small></span></a>
+      
+      <!-- HALVO Floating Mode Switcher (User vs Admin) -->
+      <div class="halvo-nav-pill" id="mode-switcher" style="margin: 0 auto;">
+        <button type="button" class="halvo-segment-btn" id="btn-mode-user">👤 وضع المستخدم (Quick Sorter)</button>
+        <button type="button" class="halvo-segment-btn active" id="btn-mode-admin">🛡️ وضع الإدارة والتدريب (Admin Studio)</button>
+      </div>
+
       <div class="topbar-actions"><span class="workspace-chip">مساحة العمل / فرز النفايات</span><div class="service-state"><i id="service-dot"></i><span id="service-label">يتصل بخدمة المشروع</span></div></div>
     </header>
 
     <main>
+      <!-- =======================================================
+           USER MODE: Fast Consumer Smart Waste Sorter
+           ======================================================= -->
+      <section class="workspace-page" id="page-user-sorter" data-workspace-page hidden>
+        <section class="hero card user-sort-hero">
+          <div>
+            <span class="eyebrow">وضع المستخدم العادي · فحص فوري بالذكاء الاصطناعي</span>
+            <h1>الفرز الذكي وتحديد سلة المهملات</h1>
+            <p>التقط صورة لأي نفاية أمامك أو ارفعها من هاتفك أو جهازك ليتعرف عليها نموذج الذكاء الاصطناعي ويوجهك فورياً إلى سلة الفرز المناسبة للحفاظ على البيئة.</p>
+          </div>
+          <!-- Solar Circular Eco Gauge -->
+          <div class="relative flex items-center justify-center" style="position:relative; width:130px; height:130px; display:flex; align-items:center; justify-content:center; flex:none;">
+            <svg style="width:100%; height:100%; transform: rotate(-90deg);" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.08)" stroke-width="7" fill="none" />
+              <circle cx="50" cy="50" r="40" stroke="url(#solarGrad)" stroke-width="7" stroke-linecap="round" fill="none" stroke-dasharray="251" stroke-dashoffset="35" style="transition: all 1s ease;" />
+              <defs>
+                <linearGradient id="solarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#5fd8c4" />
+                  <stop offset="100%" stop-color="#f2ae4b" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+              <span style="font-size:9px; color:#aaa9a3; font-weight:bold;">ECO ACC</span>
+              <span style="font-size:18px; font-weight:900; color:#5fd8c4;" id="user-eco-pct">88%</span>
+              <span style="font-size:8px; color:#aaa9a3;">ثقة الفرز</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Live Flow Line -->
+        <div class="flow-line"></div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <!-- Left: User Upload & Dropzone -->
+          <article class="card panel user-sort-card">
+            <div class="section-title" style="width:100%;">
+              <div>
+                <span class="step-label">الخطوة الأولى</span>
+                <h2>وجّه الكاميرا أو ارفع صورة</h2>
+                <p>يدعم الكاميرا المباشرة أو سحب وإسقاط أي صورة JPG أو PNG.</p>
+              </div>
+              <span class="panel-icon">📸</span>
+            </div>
+
+            <label class="dropzone" id="user-dropzone" for="user-image-file" style="width:100%; min-height:160px;">
+              <span class="upload-symbol">＋</span>
+              <b>اضغط لاختيار صورة أو اسحبها هنا</b>
+              <small>أو التقط صورة بالكاميرا فورياً</small>
+              <input id="user-image-file" type="file" accept="image/*" />
+            </label>
+            <img id="user-preview-img" alt="معاينة الصورة" style="max-width:100%; max-height:220px; border-radius:12px; margin-top:10px; display:none;" />
+            <button type="button" class="primary-button" id="btn-user-classify" style="margin-top:12px;">⚡ تصنيف النفاية وتحديد السلة فورياً</button>
+          </article>
+
+          <!-- Right: Intelligent Result & Bin Color Recommendation -->
+          <article class="card panel user-sort-card" id="user-result-card" style="justify-content: flex-start; text-align: right; align-items: stretch;">
+            <div class="section-title">
+              <div>
+                <span class="step-label">النتيجة والإرشاد البيئي</span>
+                <h2>توجيه سلة الفرز الذكي</h2>
+              </div>
+              <span class="panel-icon" id="user-bin-icon">♻️</span>
+            </div>
+
+            <div id="user-result-content" style="display:flex; flex-direction:column; gap:14px; margin-top:8px;">
+              <div style="padding:16px; border-radius:14px; background:rgba(95,216,196,0.1); border:1px solid rgba(95,216,196,0.3);">
+                <div style="font-size:11px; color:#aaa9a3; font-weight:bold;">نوع النفاية المكتشف:</div>
+                <div style="font-size:26px; font-weight:900; color:#5fd8c4; margin-top:4px;" id="user-detected-class">في انتظار رفع صورة…</div>
+                <div style="font-size:12px; color:#f2ae4b; font-weight:bold; margin-top:4px;" id="user-detected-conf">—</div>
+              </div>
+
+              <div id="user-bin-guide" style="padding:16px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);">
+                <div style="font-size:13px; font-weight:800; color:#ffffff; margin-bottom:6px;">السلة المخصصة وإرشادات التدوير:</div>
+                <p id="user-bin-text" style="font-size:12px; color:#aaa9a3; margin:0; line-height:1.7;">
+                  ارفع صورة لعنصر مثل عبوة بلاستيكية، زجاجة، علبة معدنية، أو كرتون لمعرفة طريقة التخلص المثلى والسلة الصحيحة.
+                </p>
+              </div>
+
+              <div class="disposal-badge" id="user-recycle-badge">
+                <span>●</span>
+                <span id="user-recycle-status">جاهز للاستدلال</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section class="workspace-page active" id="page-overview" data-workspace-page>
         <section class="hero card"><div><span class="eyebrow">مشروع تطبيقي · OpenCV + CNN · WinUI 3 + Web</span><h1>من صورة النفاية إلى فئتها</h1><p>مختبر محلي متكامل لتجهيز الصور، تدريب مصنف CNN، ومراجعة النتائج واستدلال الصور في واجهات مستقلة تشترك في نفس خدمة Python والنموذج.</p><div class="hero-actions"><button class="hero-btn primary" data-go="page-data">تجهيز البيانات</button><button class="hero-btn" data-go="page-training">مختبر التدريب</button><button class="hero-btn" data-go="page-predict">اختبار صورة</button></div></div><div class="recycle-orbit"><span>CV</span><i></i><i></i><i></i></div></section>
         <section class="overview-grid" aria-label="ملخص المشروع">

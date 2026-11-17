@@ -44,22 +44,22 @@
 
 ---
 
-## 🖼️ لقطات من التطبيق والمنظومة (Visual Showcase)
+## 🖼️ لقطات من التطبيق والمنظومة (Visual Showcase · HALVO Cyber Pro)
 
 ### 1. تطبيق الويندوز الأصلي (WinUI 3 & .NET 9 Desktop App)
 | لوحة التحكم الرئيسية (WinUI 3 Dashboard) | مختبر تدريب الشبكة والمنحنيات الحية (Training Lab) |
 |:---:|:---:|
 | ![لوحة التحكم بالويندوز](docs/screenshots/desktop_dashboard.png) | ![مختبر التدريب](docs/screenshots/desktop_training.png) |
 
-### 2. منصة الويب والمحاكاة ثلاثية الأبعاد (Web Platform & 3D AI Visualizer)
-| لوحة تحكم الويب المتجاوبة (Responsive Web UI) | محاكاة الموترات ثلاثية الأبعاد (3D Architecture Visualizer) |
+### 2. منصة الويب التفاعلية (HALVO Obsidian Glassmorphism)
+| وضع المستخدم العادي والفرز الفوري (Consumer Mode) | لوحة الإدارة واستوديو التحكم الهندسي (Admin Studio) |
 |:---:|:---:|
-| ![واجهة الويب](docs/screenshots/web_dashboard.png) | ![محاكاة ثلاثية الأبعاد](docs/screenshots/web_3d_visualizer.png) |
+| ![وضع المستخدم العادي](docs/screenshots/web_user_mode.png) | ![لوحة تحكم الأدمن](docs/screenshots/web_dashboard.png) |
 
-### 3. مصفوفة الالتباس والمسار التفاعلي (Confusion Matrix & Interactive Pipeline)
-| واجهة التقييم ومصفوفة الالتباس (Results & Confusion Matrix) | مسار التنفيذ التفاعلي الموحد (Interactive Pipeline) |
+### 3. المحاكاة ثلاثية الأبعاد ودفتر العمل التفاعلي الموحد (3D & Interactive Pipeline)
+| محاكاة الموترات والأسطح ثلاثية الأبعاد (3D Visualizer) | قمرة القيادة التفاعلية الموحدة (Master Interactive Pipeline) |
 |:---:|:---:|
-| ![نتائج التقييم](docs/screenshots/desktop_results.png) | ![المسار التفاعلي](docs/screenshots/colab_interactive_pipeline.jpg) |
+| ![محاكاة ثلاثية الأبعاد](docs/screenshots/web_3d_visualizer.png) | ![المسار التفاعلي](docs/screenshots/colab_interactive_pipeline.jpg) |
 
 ---
 

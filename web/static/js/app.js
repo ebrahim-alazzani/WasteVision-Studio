@@ -270,5 +270,65 @@
     showPage('page-predict');
   });
 
+  // HALVO Mode Switcher (User Mode vs Admin Studio)
+  $('btn-mode-user')?.addEventListener('click', () => {
+    $('btn-mode-user').classList.add('active');
+    $('btn-mode-admin').classList.remove('active');
+    showPage('page-user-sorter');
+  });
+
+  $('btn-mode-admin')?.addEventListener('click', () => {
+    $('btn-mode-admin').classList.add('active');
+    $('btn-mode-user').classList.remove('active');
+    showPage('page-overview');
+  });
+
+  // User Mode File Selector & Instant AI Sorting
+  let userFile = null;
+  $('user-image-file')?.addEventListener('change', (e) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    userFile = f;
+    const url = URL.createObjectURL(f);
+    const p = $('user-preview-img');
+    if (p) {
+      p.src = url;
+      p.style.display = 'block';
+    }
+  });
+
+  $('btn-user-classify')?.addEventListener('click', async () => {
+    if (!userFile) {
+      showError('يرجى اختيار صورة أولاً.');
+      return;
+    }
+    try {
+      const fd = new FormData();
+      fd.append('file', userFile);
+      const res = await request('/api/predict', { method: 'POST', body: fd });
+      const pred = String(res.prediction || '').toLowerCase();
+      const conf = Number(res.confidence || 0);
+
+      if ($('user-detected-class')) $('user-detected-class').textContent = res.prediction.toUpperCase();
+      if ($('user-detected-conf')) $('user-detected-conf').textContent = `نسبة الثقة: ${(conf * 100).toFixed(1)}%`;
+      if ($('user-eco-pct')) $('user-eco-pct').textContent = `${(conf * 100).toFixed(0)}%`;
+
+      const binGuides = {
+        'paper': { bin: 'السلة الزرقاء 🟦 (أوراق وكرتون)', tip: 'حافظ على الورق جافاً ونظيفاً لتسهيل إعادة تدويره وحماية الأشجار.', rec: 'قابلة لإعادة التدوير 100%' },
+        'cardboard': { bin: 'السلة الزرقاء 🟦 (كرتون وورق مقوى)', tip: 'اطوِ الصناديق الكرتونية لتقليل الحجم وإفساح المجال في حاوية التدوير.', rec: 'قابلة لإعادة التدوير 100%' },
+        'plastic': { bin: 'السلة الصفراء 🟨 (بلاستيك ومعادن)', tip: 'اغسل العبوة البلاستيكية وجففها قبل إلقائها لتجنب تلوث الشحنة.', rec: 'قابلة لإعادة التدوير' },
+        'metal': { bin: 'السلة الصفراء 🟨 (معادن وعلب الألمنيوم)', tip: 'علب الأطعمة والمشروبات - اطوِ الحواف الحادة لتفادي جرح عمال النظافة.', rec: 'قابلة لإعادة التدوير 100%' },
+        'glass': { bin: 'السلة الخضراء 🟩 (زجاج وزجاجات)', tip: 'ضع الزجاج بحذر دون تكسيره لتفادي خطر الشظايا الحادة.', rec: 'قابلة لإعادة التدوير بالكامل' },
+        'trash': { bin: 'السلة السوداء ⬛ (نفايات عامة غير قابلة للتدوير)', tip: 'نفايات عامة أو مختلطة - احرص على إغلاق الكيس بإحكام لمنع الروائح والتلوث.', rec: 'طمر أو معالجة حرارية' }
+      };
+
+      const guide = binGuides[pred] || { bin: 'السلة العامة', tip: 'يُرجى فرز المادة وفق تعليمات النظافة البلدية.', rec: 'معالجة بيئية' };
+      if ($('user-bin-text')) $('user-bin-text').innerHTML = `<b>السلة المخصصة:</b> ${guide.bin}<br/><br/><b>إرشاد الفرز:</b> ${guide.tip}`;
+      if ($('user-recycle-status')) $('user-recycle-status').textContent = guide.rec;
+    } catch (err) {
+      showError(err.message || 'تعذر تصنيف الصورة.');
+    }
+  });
+
   loadState();
 })();
